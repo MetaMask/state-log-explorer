@@ -2,7 +2,6 @@ const Component = require('react').Component
 const h = require('react-hyperscript')
 const inherits = require('util').inherits
 const ethUtil = require('ethereumjs-util')
-const TxStateHistory = require('./tx-state-history')
 const BN = ethUtil.BN
 const GWEI_FACTOR = new BN('1000000000', 10)
 
@@ -50,23 +49,16 @@ NewComponent.prototype.render = function () {
   }
 
   return (
-    h('.transaction', {
+    h('.tx-state-history', {
       style: {
-        border: '1px solid black',
-        backgroundColor: statusColor,
+        paddingLeft: '16px',
       },
-    }, [
-      h('p', `Time: ${dateString}`),
-      h('p', `From: ${txParams.from}`),
-      h('p', `To: ${txParams.to}`),
-      h('p', `Nonce: ${txParams.nonce} ` + (txParams.nonce ? `(${parseInt(txParams.nonce)})` : '')),
-      h('p', `Gas Price: ${gasPriceString} gwei`),
-      h('p', `Status: ${status}`),
-      (status === 'failed') ?
-        h('p', `Reason: ${JSON.stringify(err.message)}`) : null,
-      h('p', `Hash: ${hash}`),
-      h('p', `History:`),
-      h(TxStateHistory, { transaction })
-    ])
+    }, history.map((entry) => {
+      return (
+        h('pre', {
+          border: '1px solid black',
+        }, `${JSON.stringify(entry, null, 2)}`)
+      )
+    }))
   )
 }
