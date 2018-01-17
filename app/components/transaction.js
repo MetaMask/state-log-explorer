@@ -58,10 +58,10 @@ NewComponent.prototype.render = function () {
       h('p', `Time: ${dateString}`),
       h('p', `From: ${txParams.from}`),
       h('p', `To: ${txParams.to}`),
-      h('p', `Nonce: ${parseInt(txParams.nonce)}`),
+      h('p', `Nonce: ${txParams.nonce} ` + (txParams.nonce ? `(${parseInt(txParams.nonce)})` : '')),
       h('p', `Gas Price: ${gasPriceString} gwei`),
       h('p', `Status: ${status}`),
-      status === 'failed' ?
+      (status === 'failed') ?
         h('p', `Reason: ${JSON.stringify(err.message)}`) : null,
       h('p', `Hash: ${hash}`),
     ])
