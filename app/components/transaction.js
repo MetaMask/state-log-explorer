@@ -65,8 +65,10 @@ NewComponent.prototype.render = function () {
       (status === 'failed') ?
         h('p', `Reason: ${JSON.stringify(err.message)}`) : null,
       h('p', `Hash: ${hash}`),
-      h('p', `History:`),
-      h(TxStateHistory, { transaction })
+      h('details', [
+        h('summary', 'History'),
+        h(TxStateHistory, { transaction }),
+      ]),
     ])
   )
 }
