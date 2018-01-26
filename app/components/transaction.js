@@ -2,6 +2,7 @@ const Component = require('react').Component
 const h = require('react-hyperscript')
 const inherits = require('util').inherits
 const ethUtil = require('ethereumjs-util')
+const Address = require('./address')
 const TxStateHistory = require('./tx-state-history')
 const BN = ethUtil.BN
 const GWEI_FACTOR = new BN('1000000000', 10)
@@ -56,19 +57,35 @@ NewComponent.prototype.render = function () {
         backgroundColor: statusColor,
       },
     }, [
+
       h('p', `Time: ${dateString}`),
-      h('p', `From: ${txParams.from}`),
-      h('p', `To: ${txParams.to}`),
+
+      h('p', [
+        h('span', 'From: '),
+        h(Address, { address:  txParams.from}),
+      ]),
+
+      h('p', [
+        h('span', 'To: '),
+        h(Address, { address:  txParams.to}),
+      ]),
+
       h('p', `Nonce: ${txParams.nonce} ` + (txParams.nonce ? `(${parseInt(txParams.nonce)})` : '')),
+
       h('p', `Gas Price: ${gasPriceString} gwei`),
+
       h('p', `Status: ${status}`),
+
       (status === 'failed') ?
         h('p', `Reason: ${JSON.stringify(err.message)}`) : null,
+
       h('p', `Hash: ${hash}`),
+
       h('details', [
         h('summary', 'History'),
         h(TxStateHistory, { transaction }),
       ]),
+
     ])
   )
 }
