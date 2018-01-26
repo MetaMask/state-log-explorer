@@ -6774,7 +6774,7 @@ AppRoot.prototype.render = function () {
   return h('.content', [h('div', {
     style: {}
   }, [h('h1', 'MetaMask State Log Explorer'), h('a', {
-    href: 'https://support.metamask.io/kb/article/15-copying-state-logs'
+    href: 'http://metamask.helpscoutdocs.com/article/9-how-to-download-state-logs'
   }, 'How to Copy MetaMask State Logs'), h('br'), h('a', {
     href: 'https://github.com/MetaMask/state-log-explorer'
   }, 'Fork on Github'), h(_reactDropzone2.default, {
