@@ -6598,6 +6598,7 @@ var Component = require('react').Component;
 var h = require('react-hyperscript');
 var inherits = require('util').inherits;
 var ethUtil = require('ethereumjs-util');
+var Address = require('./address');
 var TxStateHistory = require('./tx-state-history');
 var BN = ethUtil.BN;
 var GWEI_FACTOR = new BN('1000000000', 10);
@@ -6659,10 +6660,10 @@ NewComponent.prototype.render = function () {
       border: '1px solid black',
       backgroundColor: statusColor
     }
-  }, [h('p', 'Time: ' + dateString), h('p', 'From: ' + txParams.from), h('p', 'To: ' + txParams.to), h('p', 'Nonce: ' + txParams.nonce + ' ' + (txParams.nonce ? '(' + parseInt(txParams.nonce) + ')' : '')), h('p', 'Gas Price: ' + gasPriceString + ' gwei'), h('p', 'Status: ' + status), status === 'failed' ? h('p', 'Reason: ' + JSON.stringify(err.message)) : null, h('p', 'Hash: ' + hash), h('details', [h('summary', 'History'), h(TxStateHistory, { transaction: transaction })])]);
+  }, [h('p', 'Time: ' + dateString), h('p', [h('span', 'From: '), h(Address, { address: txParams.from })]), h('p', [h('span', 'To: '), h(Address, { address: txParams.to })]), h('p', 'Nonce: ' + txParams.nonce + ' ' + (txParams.nonce ? '(' + parseInt(txParams.nonce) + ')' : '')), h('p', 'Gas Price: ' + gasPriceString + ' gwei'), h('p', 'Status: ' + status), status === 'failed' ? h('p', 'Reason: ' + JSON.stringify(err.message)) : null, h('p', 'Hash: ' + hash), h('details', [h('summary', 'History'), h(TxStateHistory, { transaction: transaction })])]);
 };
 
-},{"./tx-state-history":37,"ethereumjs-util":67,"react":297,"react-hyperscript":263,"util":32}],37:[function(require,module,exports){
+},{"./address":33,"./tx-state-history":37,"ethereumjs-util":67,"react":297,"react-hyperscript":263,"util":32}],37:[function(require,module,exports){
 'use strict';
 
 var Component = require('react').Component;
@@ -6772,7 +6773,7 @@ AppRoot.prototype.render = function () {
 
   return h('.content', [h('div', {
     style: {}
-  }, [h('h1', 'State Log Explorer'), h('a', {
+  }, [h('h1', 'MetaMask State Log Explorer'), h('a', {
     href: 'https://support.metamask.io/kb/article/15-copying-state-logs'
   }, 'How to Copy MetaMask State Logs'), h('br'), h('a', {
     href: 'https://github.com/MetaMask/state-log-explorer'
