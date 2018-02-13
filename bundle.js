@@ -6636,6 +6636,10 @@ NewComponent.prototype.render = function () {
   var gasPriceBN = new BN(gasPriceHex, 16);
   var gasPriceString = gasPriceBN.div(GWEI_FACTOR).toString(10);
 
+  var valueHex = ethUtil.stripHexPrefix(txParams.value);
+  var valueBn = new BN(valueHex, 16);
+  var valueStr = valueBn.toString(10);
+
   var statusColor = 'white';
   switch (status) {
     case 'failed':
@@ -6660,7 +6664,7 @@ NewComponent.prototype.render = function () {
       border: '1px solid black',
       backgroundColor: statusColor
     }
-  }, [h('p', 'Time: ' + dateString), h('p', [h('span', 'From: '), h(Address, { address: txParams.from })]), h('p', [h('span', 'To: '), h(Address, { address: txParams.to })]), h('p', 'Nonce: ' + txParams.nonce + ' ' + (txParams.nonce ? '(' + parseInt(txParams.nonce) + ')' : '')), h('p', 'Gas Price: ' + gasPriceString + ' gwei'), h('p', 'Status: ' + status), status === 'failed' ? h('p', 'Reason: ' + JSON.stringify(err.message)) : null, h('p', 'Hash: ' + hash), h('details', [h('summary', 'History'), h(TxStateHistory, { transaction: transaction })])]);
+  }, [h('p', 'Time: ' + dateString), h('p', [h('span', 'From: '), h(Address, { address: txParams.from })]), h('p', [h('span', 'To: '), h(Address, { address: txParams.to })]), h('p', [h('span', 'Value: '), h('span', valueStr), h('span', ' wei')]), h('p', 'Nonce: ' + txParams.nonce + ' ' + (txParams.nonce ? '(' + parseInt(txParams.nonce) + ')' : '')), h('p', 'Gas Price: ' + gasPriceString + ' gwei'), h('p', 'Status: ' + status), status === 'failed' ? h('p', 'Reason: ' + JSON.stringify(err.message)) : null, h('p', 'Hash: ' + hash), h('details', [h('summary', 'History'), h(TxStateHistory, { transaction: transaction })])]);
 };
 
 },{"./address":33,"./tx-state-history":37,"ethereumjs-util":67,"react":297,"react-hyperscript":263,"util":32}],37:[function(require,module,exports){
