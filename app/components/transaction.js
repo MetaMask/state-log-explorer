@@ -38,7 +38,7 @@ NewComponent.prototype.render = function () {
   let statusColor = 'white'
   switch (status) {
     case 'failed':
-      statusColor = 'red'
+      statusColor = '#fdcaca'
       break
     case  'submitted':
       statusColor = 'yellow'
