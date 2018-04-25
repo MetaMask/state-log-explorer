@@ -38,6 +38,7 @@ NewComponent.prototype.render = function () {
       return (
         h('pre', {
           border: '1px solid black',
+          overflow: 'scroll',
         }, `${JSON.stringify(entry, null, 2)}`)
       )
     }))

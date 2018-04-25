@@ -6,9 +6,18 @@ a {
   color: black;
 }
 
+section {
+  margin: 8px;
+}
+
 /*
-transaction statuses
+transactions
 */
+
+.transaction {
+  margin: 8px 0;
+  padding: 8px;
+}
 
 /* normal */
 .transaction-status-unapproved {
