@@ -96,7 +96,7 @@ TransactionList.prototype.render = function () {
   var transactions = props.transactions;
 
 
-  return h('section.transactions', [h('h2', 'Sent Transactions'), h('.transaction-list', transactions.map(function (transaction) {
+  return h('section.transactions', [h('h2', 'Transactions'), h('.transaction-list', transactions.map(function (transaction) {
     return h(Transaction, { transaction: transaction });
   }))]);
 };
