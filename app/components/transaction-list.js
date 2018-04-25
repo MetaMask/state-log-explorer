@@ -16,7 +16,7 @@ TransactionList.prototype.render = function () {
 
   return (
     h('section.transactions', [
-      h('h2', 'Sent Transactions'),
+      h('h2', 'Transactions'),
 
       h('.transaction-list', transactions.map((transaction) => {
         return h(Transaction, { transaction })
