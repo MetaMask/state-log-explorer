@@ -5,3 +5,39 @@ html, body {
 a {
   color: black;
 }
+
+/*
+transaction statuses
+*/
+
+/* normal */
+.transaction-status-unapproved {
+  /*  grey */
+  background-color: #e6e6e6;
+}
+.transaction-status-rejected {
+  /*  orange */
+  background-color: #ffc966;
+}
+.transaction-status-submitted {
+  /* yellow */
+  background-color: #ffff6e;
+}
+.transaction-status-confirmed {
+  /* green */
+  background-color: #c7ffc7;
+}
+.transaction-status-dropped {
+  /* yellow */
+  background-color: #ffff6e;
+}
+
+/* bad */
+.transaction-status-failed {
+  /* red */
+  background-color: #fdcaca;
+}
+.transaction-status-approved {
+  /* red */
+  background-color: #fdcaca;
+}

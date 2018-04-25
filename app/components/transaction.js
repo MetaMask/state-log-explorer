@@ -35,30 +35,10 @@ NewComponent.prototype.render = function () {
   const valueBn = new BN(valueHex, 16)
   const valueStr = valueBn.toString(10)
 
-  let statusColor = 'white'
-  switch (status) {
-    case 'failed':
-      statusColor = '#fdcaca'
-      break
-    case  'submitted':
-      statusColor = 'yellow'
-      break
-    case 'rejected':
-      statusColor = 'orange'
-      break
-    case 'unapproved':
-      statusColor = 'grey'
-      break
-    case 'confirmed':
-      statusColor = 'green'
-      break
-  }
-
   return (
-    h('.transaction', {
+    h(`.transaction.transaction-status-${status}`, {
       style: {
         border: '1px solid black',
-        backgroundColor: statusColor,
       },
     }, [
 

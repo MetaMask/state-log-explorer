@@ -29,25 +29,6 @@ NewComponent.prototype.render = function () {
   const gasPriceBN = new BN(gasPriceHex, 16)
   const gasPriceString = gasPriceBN.div(GWEI_FACTOR).toString(10)
 
-  let statusColor = 'white'
-  switch (status) {
-    case 'failed':
-      statusColor = 'red'
-      break
-    case  'submitted':
-      statusColor = 'yellow'
-      break
-    case 'rejected':
-      statusColor = 'orange'
-      break
-    case 'unapproved':
-      statusColor = 'grey'
-      break
-    case 'confirmed':
-      statusColor = 'green'
-      break
-  }
-
   return (
     h('.tx-state-history', {
       style: {
