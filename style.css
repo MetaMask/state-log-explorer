@@ -19,22 +19,24 @@ transactions
   padding: 8px;
 }
 
-/* normal */
+/* good */
 .transaction-status-unapproved {
   /*  grey */
   background-color: #e6e6e6;
 }
 .transaction-status-rejected {
-  /*  orange */
-  background-color: #ffc966;
-}
-.transaction-status-submitted {
-  /* yellow */
-  background-color: #ffff6e;
+  /*  green */
+  background-color: #c7ffc7;
 }
 .transaction-status-confirmed {
   /* green */
   background-color: #c7ffc7;
+}
+
+/* suspicious */
+.transaction-status-submitted {
+  /* yellow */
+  background-color: #ffff6e;
 }
 .transaction-status-dropped {
   /* yellow */
