@@ -6920,7 +6920,7 @@ NewComponent.prototype.render = function () {
     style: {
       border: '1px solid black'
     }
-  }, [h('p', 'Time: ' + dateString), h('p', [h('span', 'From: '), h(Address, { address: txParams.from })]), h('p', [h('span', 'To: '), h(Address, { address: txParams.to })]), h('p', [h('span', 'Value: '), h('span', valueStr), h('span', ' wei')]), h('p', 'Nonce: ' + txParams.nonce + ' ' + (txParams.nonce ? '(' + parseInt(txParams.nonce) + ')' : '')), h('p', 'Gas Price: ' + gasPriceString + ' gwei'), h('p', 'Gas Limit: ' + gasLimitString + ' gwei'), h('p', 'Status: ' + status), status === 'failed' ? h('p', 'Reason: ' + JSON.stringify(err.message)) : null, h('p', 'Hash: ' + hash), h('details', [h('summary', 'History'), h(TxStateHistory, { transaction: transaction })])]);
+  }, [h('p', 'Time: ' + dateString), h('p', [h('span', 'From: '), h(Address, { address: txParams.from })]), h('p', [h('span', 'To: '), h(Address, { address: txParams.to })]), h('p', [h('span', 'Value: '), h('span', valueStr), h('span', ' wei')]), h('p', 'Nonce: ' + txParams.nonce + ' ' + (txParams.nonce ? '(' + parseInt(txParams.nonce) + ')' : '')), h('p', 'Gas Price: ' + gasPriceString + ' gwei'), h('p', 'Gas Limit: ' + gasLimitString), h('p', 'Status: ' + status), status === 'failed' ? h('p', 'Reason: ' + JSON.stringify(err.message)) : null, h('p', 'Hash: ' + hash), h('details', [h('summary', 'History'), h(TxStateHistory, { transaction: transaction })])]);
 };
 
 },{"./address":33,"./tx-state-history":37,"ethereumjs-util":67,"react":297,"react-hyperscript":263,"util":32}],37:[function(require,module,exports){
