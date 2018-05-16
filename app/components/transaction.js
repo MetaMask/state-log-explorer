@@ -31,6 +31,11 @@ NewComponent.prototype.render = function () {
   const gasPriceBN = new BN(gasPriceHex, 16)
   const gasPriceString = gasPriceBN.div(GWEI_FACTOR).toString(10)
 
+  const { gas } = txParams
+  const gasLimitHex = ethUtil.stripHexPrefix(gas)
+  const gasLimitBN = new BN(gasLimitHex, 16)
+  const gasLimitString = gasLimitBN.toString(10)
+
   const valueHex = ethUtil.stripHexPrefix(txParams.value)
   const valueBn = new BN(valueHex, 16)
   const valueStr = valueBn.toString(10)
@@ -63,6 +68,8 @@ NewComponent.prototype.render = function () {
       h('p', `Nonce: ${txParams.nonce} ` + (txParams.nonce ? `(${parseInt(txParams.nonce)})` : '')),
 
       h('p', `Gas Price: ${gasPriceString} gwei`),
+
+      h('p', `Gas Limit: ${gasLimitString}`),
 
       h('p', `Status: ${status}`),
 
