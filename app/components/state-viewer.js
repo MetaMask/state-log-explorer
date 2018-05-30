@@ -34,7 +34,7 @@ StateViewer.prototype.render = function () {
         h('p', [
           h('span', 'Current Account: '),
           h(Address, { address: selectedAddress }),
-          h('span', 'Browser: ' + browser),
+          h('div', 'Browser: ' + browser),
         ]),
         this.renderBalance(),
       ]),

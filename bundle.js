@@ -6806,7 +6806,8 @@ StateViewer.prototype.render = function () {
   var props = this.props || {};
   var parsedFile = props.parsedFile;
   var version = parsedFile.version,
-      metamask = parsedFile.metamask;
+      metamask = parsedFile.metamask,
+      browser = parsedFile.browser;
   var selectedAddress = metamask.selectedAddress;
 
 
@@ -6815,7 +6816,7 @@ StateViewer.prototype.render = function () {
       padding: '5px',
       background: '#DDD'
     }
-  }, [h('p', 'MetaMask Version ' + version), h('p', [h('span', 'Current Account: '), h(Address, { address: selectedAddress })]), this.renderBalance()]), h(Transactions, { transactions: parsedFile.metamask.selectedAddressTxList })]);
+  }, [h('p', 'MetaMask Version ' + version), h('p', [h('span', 'Current Account: '), h(Address, { address: selectedAddress }), h('div', 'Browser: ' + browser)]), this.renderBalance()]), h(Transactions, { transactions: parsedFile.metamask.selectedAddressTxList })]);
 };
 
 StateViewer.prototype.renderBalance = function () {
