@@ -18,7 +18,7 @@ function StateViewer () {
 StateViewer.prototype.render = function () {
   const props = this.props || {}
   const { parsedFile } = props
-  const { version, metamask } = parsedFile
+  const { version, metamask, browser } = parsedFile
   const { selectedAddress } = metamask
 
   return (
@@ -34,6 +34,7 @@ StateViewer.prototype.render = function () {
         h('p', [
           h('span', 'Current Account: '),
           h(Address, { address: selectedAddress }),
+          h('span', 'Browser: ' + browser),
         ]),
         this.renderBalance(),
       ]),
