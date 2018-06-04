@@ -19,7 +19,12 @@ StateViewer.prototype.render = function () {
   const props = this.props || {}
   const { parsedFile } = props
   const { version, metamask, browser } = parsedFile
-  const { selectedAddress } = metamask
+  const { selectedAddress, lostIdentities } = metamask
+
+  console.log('THE FILE METAMASK~!')
+  console.dir(metamask)
+
+  const anyLost = Object.keys(lostIdentities).length > 0
 
   return (
     h('.state-viewer', [
@@ -31,17 +36,34 @@ StateViewer.prototype.render = function () {
         },
       }, [
         h('p', `MetaMask Version ${version}`),
-        h('p', [
+        h('div', [
           h('span', 'Current Account: '),
           h(Address, { address: selectedAddress }),
-          h('div', 'Browser: ' + browser),
+          h('p', 'Browser: ' + browser),
+          h('br'),
         ]),
+        anyLost ? this.renderLost() : null,
         this.renderBalance(),
       ]),
 
       h(Transactions,  { transactions: parsedFile.metamask.selectedAddressTxList }),
     ])
   )
+}
+
+StateViewer.prototype.renderLost = function () {
+  const props = this.props || {}
+  const { parsedFile } = props
+  const { version, metamask, browser } = parsedFile
+  const { selectedAddress, lostIdentities } = metamask
+
+  const lost = Object.keys(lostIdentities).join(', ')
+
+  return h('p', {
+    style: {
+      background: 'red',
+    }
+  }, `Orphaned 4457: ${lost}`)
 }
 
 StateViewer.prototype.renderBalance = function () {

@@ -6808,15 +6808,40 @@ StateViewer.prototype.render = function () {
   var version = parsedFile.version,
       metamask = parsedFile.metamask,
       browser = parsedFile.browser;
-  var selectedAddress = metamask.selectedAddress;
+  var selectedAddress = metamask.selectedAddress,
+      lostIdentities = metamask.lostIdentities;
 
+
+  console.log('THE FILE METAMASK~!');
+  console.dir(metamask);
+
+  var anyLost = Object.keys(lostIdentities).length > 0;
 
   return h('.state-viewer', [h('section.overview', {
     style: {
       padding: '5px',
       background: '#DDD'
     }
-  }, [h('p', 'MetaMask Version ' + version), h('p', [h('span', 'Current Account: '), h(Address, { address: selectedAddress }), h('div', 'Browser: ' + browser)]), this.renderBalance()]), h(Transactions, { transactions: parsedFile.metamask.selectedAddressTxList })]);
+  }, [h('p', 'MetaMask Version ' + version), h('div', [h('span', 'Current Account: '), h(Address, { address: selectedAddress }), h('p', 'Browser: ' + browser), h('br')]), anyLost ? this.renderLost() : null, this.renderBalance()]), h(Transactions, { transactions: parsedFile.metamask.selectedAddressTxList })]);
+};
+
+StateViewer.prototype.renderLost = function () {
+  var props = this.props || {};
+  var parsedFile = props.parsedFile;
+  var version = parsedFile.version,
+      metamask = parsedFile.metamask,
+      browser = parsedFile.browser;
+  var selectedAddress = metamask.selectedAddress,
+      lostIdentities = metamask.lostIdentities;
+
+
+  var lost = Object.keys(lostIdentities).join(', ');
+
+  return h('p', {
+    style: {
+      background: 'red'
+    }
+  }, 'Orphaned 4457: ' + lost);
 };
 
 StateViewer.prototype.renderBalance = function () {
