@@ -57,13 +57,15 @@ StateViewer.prototype.renderLost = function () {
   const { version, metamask, browser } = parsedFile
   const { selectedAddress, lostIdentities } = metamask
 
-  const lost = Object.keys(lostIdentities).join(', ')
+  const lost = Object.keys(lostIdentities).map((address) => {
+    return h(Address, { address })
+  })
 
   return h('p', {
     style: {
       background: 'red',
     }
-  }, `Orphaned 4457: ${lost}`)
+  }, ['Orphaned 4457: '].concat(lost))
 }
 
 StateViewer.prototype.renderBalance = function () {

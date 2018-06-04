@@ -6835,13 +6835,15 @@ StateViewer.prototype.renderLost = function () {
       lostIdentities = metamask.lostIdentities;
 
 
-  var lost = Object.keys(lostIdentities).join(', ');
+  var lost = Object.keys(lostIdentities).map(function (address) {
+    return h(Address, { address: address });
+  });
 
   return h('p', {
     style: {
       background: 'red'
     }
-  }, 'Orphaned 4457: ' + lost);
+  }, ['Orphaned 4457: '].concat(lost));
 };
 
 StateViewer.prototype.renderBalance = function () {
