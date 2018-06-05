@@ -37,7 +37,6 @@ NewComponent.prototype.render = function () {
     }, history.map((entry) => {
       return (
         h('pre', {
-          border: '1px solid black',
           overflow: 'scroll',
         }, `${JSON.stringify(entry, null, 2)}`)
       )

@@ -21,10 +21,7 @@ StateViewer.prototype.render = function () {
   const { version, metamask, browser } = parsedFile
   const { selectedAddress, lostIdentities } = metamask
 
-  console.log('THE FILE METAMASK~!')
-  console.dir(metamask)
-
-  const anyLost = Object.keys(lostIdentities).length > 0
+  const anyLost = lostIdentities && Object.keys(lostIdentities).length > 0
 
   return (
     h('.state-viewer', [
@@ -40,7 +37,6 @@ StateViewer.prototype.render = function () {
           h('span', 'Current Account: '),
           h(Address, { address: selectedAddress }),
           h('p', 'Browser: ' + browser),
-          h('br'),
         ]),
         anyLost ? this.renderLost() : null,
         this.renderBalance(),
