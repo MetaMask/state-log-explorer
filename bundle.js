@@ -33,11 +33,10 @@ var Address = require('./address');
 var ethUtil = require('ethereumjs-util');
 var BN = ethUtil.BN;
 
-var ETHER_SCALE = new BN('1000000000000000000', 10);
-
 module.exports = StateViewer;
 
 inherits(StateViewer, Component);
+
 function StateViewer() {
   Component.call(this);
 }
@@ -59,17 +58,14 @@ StateViewer.prototype.render = function () {
       padding: '5px',
       background: '#DDD'
     }
-  }, [h('p', 'MetaMask Version ' + version), h('div', [h('span', 'Current Account: '), h(Address, { address: selectedAddress }), h('p', 'Browser: ' + browser)]), anyLost ? this.renderLost() : null, this.renderBalance()]), h(Transactions, { transactions: parsedFile.metamask.selectedAddressTxList })]);
+  }, [h('p', 'MetaMask Version ' + version), h('div', [h('span', 'Current Account: '), h(Address, { address: selectedAddress }), h('p', 'Browser: ' + browser)]), anyLost ? this.renderLost() : null, this.renderBalance()]), h(Transactions, { transactions: parsedFile.metamask.currentNetworkTxList })]);
 };
 
 StateViewer.prototype.renderLost = function () {
   var props = this.props || {};
   var parsedFile = props.parsedFile;
-  var version = parsedFile.version,
-      metamask = parsedFile.metamask,
-      browser = parsedFile.browser;
-  var selectedAddress = metamask.selectedAddress,
-      lostIdentities = metamask.lostIdentities;
+  var metamask = parsedFile.metamask;
+  var lostIdentities = metamask.lostIdentities;
 
 
   var lost = Object.keys(lostIdentities).map(function (address) {
@@ -86,8 +82,7 @@ StateViewer.prototype.renderLost = function () {
 StateViewer.prototype.renderBalance = function () {
   var props = this.props || {};
   var parsedFile = props.parsedFile;
-  var version = parsedFile.version,
-      metamask = parsedFile.metamask;
+  var metamask = parsedFile.metamask;
   var selectedAddress = metamask.selectedAddress,
       accounts = metamask.accounts;
 
@@ -148,16 +143,10 @@ function NewComponent() {
 NewComponent.prototype.render = function () {
   var props = this.props;
   var transaction = props.transaction;
-  var id = transaction.id,
-      time = transaction.time,
+  var time = transaction.time,
       status = transaction.status,
-      metamaskNetworkId = transaction.metamaskNetworkId,
       txParams = transaction.txParams,
-      gasLimitSpecified = transaction.gasLimitSpecified,
-      estimatedGas = transaction.estimatedGas,
-      history = transaction.history,
       hash = transaction.hash,
-      retryCount = transaction.retryCount,
       err = transaction.err;
 
   // Date stuff
@@ -208,28 +197,8 @@ function NewComponent() {
 NewComponent.prototype.render = function () {
   var props = this.props;
   var transaction = props.transaction;
-  var id = transaction.id,
-      time = transaction.time,
-      status = transaction.status,
-      metamaskNetworkId = transaction.metamaskNetworkId,
-      txParams = transaction.txParams,
-      gasLimitSpecified = transaction.gasLimitSpecified,
-      estimatedGas = transaction.estimatedGas,
-      history = transaction.history,
-      hash = transaction.hash,
-      retryCount = transaction.retryCount,
-      err = transaction.err;
+  var history = transaction.history;
 
-  // Date stuff
-
-  var date = new Date(time);
-  var dateString = date.toGMTString();
-
-  var gasPrice = txParams.gasPrice;
-
-  var gasPriceHex = ethUtil.stripHexPrefix(gasPrice);
-  var gasPriceBN = new BN(gasPriceHex, 16);
-  var gasPriceString = gasPriceBN.div(GWEI_FACTOR).toString(10);
 
   return h('.tx-state-history', {
     style: {
@@ -272,7 +241,6 @@ function AppRoot() {
 }
 
 AppRoot.prototype.render = function () {
-  var props = this.props;
   var state = this.state || {};
   var parsedFile = state.parsedFile;
 

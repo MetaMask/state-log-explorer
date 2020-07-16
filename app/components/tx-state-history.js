@@ -15,19 +15,20 @@ function NewComponent () {
 NewComponent.prototype.render = function () {
   const props = this.props
   const { transaction } = props
-  const { id, time, status,
-   metamaskNetworkId, txParams,
-    gasLimitSpecified, estimatedGas,
-    history, hash, retryCount, err } = transaction
-
-  // Date stuff
-  const date = new Date(time)
-  const dateString = date.toGMTString()
-
-  const { gasPrice } = txParams
-  const gasPriceHex = ethUtil.stripHexPrefix(gasPrice)
-  const gasPriceBN = new BN(gasPriceHex, 16)
-  const gasPriceString = gasPriceBN.div(GWEI_FACTOR).toString(10)
+  const {
+    history,
+    // time,
+    // txParams,
+    // hash,
+    // id,
+    // metamaskNetworkId,
+    // gasLimitSpecified,
+    // estimatedGas,
+    // history,
+    // retryCount,
+    // status,
+    // err,
+  } = transaction
 
   return (
     h('.tx-state-history', {
