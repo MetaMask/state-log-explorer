@@ -22,6 +22,10 @@ StateViewer.prototype.render = function () {
 
   const anyLost = lostIdentities && Object.keys(lostIdentities).length > 0
 
+  const transactions = metamask.selectedAddressTxList
+    ? metamask.selectedAddressTxList // legacy
+    : metamask.currentNetworkTxList // >=8.0.0
+
   return (
     h('.state-viewer', [
 
@@ -41,7 +45,7 @@ StateViewer.prototype.render = function () {
         this.renderBalance(),
       ]),
 
-      h(Transactions,  { transactions: parsedFile.metamask.currentNetworkTxList }),
+      h(Transactions,  { transactions }),
     ])
   )
 }

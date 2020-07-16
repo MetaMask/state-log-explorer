@@ -53,12 +53,15 @@ StateViewer.prototype.render = function () {
 
   var anyLost = lostIdentities && Object.keys(lostIdentities).length > 0;
 
+  var transactions = metamask.selectedAddressTxList ? metamask.selectedAddressTxList // legacy
+  : metamask.currentNetworkTxList; // >=8.0.0
+
   return h('.state-viewer', [h('section.overview', {
     style: {
       padding: '5px',
       background: '#DDD'
     }
-  }, [h('p', 'MetaMask Version ' + version), h('div', [h('span', 'Current Account: '), h(Address, { address: selectedAddress }), h('p', 'Browser: ' + browser)]), anyLost ? this.renderLost() : null, this.renderBalance()]), h(Transactions, { transactions: parsedFile.metamask.currentNetworkTxList })]);
+  }, [h('p', 'MetaMask Version ' + version), h('div', [h('span', 'Current Account: '), h(Address, { address: selectedAddress }), h('p', 'Browser: ' + browser)]), anyLost ? this.renderLost() : null, this.renderBalance()]), h(Transactions, { transactions: transactions })]);
 };
 
 StateViewer.prototype.renderLost = function () {
