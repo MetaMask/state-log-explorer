@@ -42,7 +42,7 @@ StateViewer.prototype.render = function () {
         this.renderBalance(),
       ]),
 
-      h(Transactions,  { transactions: parsedFile.metamask.selectedAddressTxList }),
+      h(Transactions,  { transactions: parsedFile.metamask.currentNetworkTxList }),
     ])
   )
 }
