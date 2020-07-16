@@ -17,10 +17,19 @@ function NewComponent () {
 NewComponent.prototype.render = function () {
   const props = this.props
   const { transaction } = props
-  const { id, time, status,
-   metamaskNetworkId, txParams,
-    gasLimitSpecified, estimatedGas,
-    history, hash, retryCount, err } = transaction
+  const {
+    time,
+    status,
+    txParams,
+    hash,
+    err,
+    // id,
+    // metamaskNetworkId,
+    // gasLimitSpecified,
+    // estimatedGas,
+    // history,
+    // retryCount,
+  } = transaction
 
   // Date stuff
   const date = new Date(time)
@@ -82,7 +91,6 @@ NewComponent.prototype.render = function () {
         h('summary', 'History'),
         h(TxStateHistory, { transaction }),
       ]),
-
     ])
   )
 }

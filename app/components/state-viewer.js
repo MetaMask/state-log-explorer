@@ -6,11 +6,10 @@ const Address = require('./address')
 const ethUtil = require('ethereumjs-util')
 const BN = ethUtil.BN
 
-const ETHER_SCALE = new BN('1000000000000000000', 10)
-
 module.exports = StateViewer
 
 inherits(StateViewer, Component)
+
 function StateViewer () {
   Component.call(this)
 }
@@ -22,6 +21,10 @@ StateViewer.prototype.render = function () {
   const { selectedAddress, lostIdentities } = metamask
 
   const anyLost = lostIdentities && Object.keys(lostIdentities).length > 0
+
+  const transactions = metamask.selectedAddressTxList
+    ? metamask.selectedAddressTxList // legacy
+    : metamask.currentNetworkTxList // >=8.0.0
 
   return (
     h('.state-viewer', [
@@ -42,7 +45,7 @@ StateViewer.prototype.render = function () {
         this.renderBalance(),
       ]),
 
-      h(Transactions,  { transactions: parsedFile.metamask.selectedAddressTxList }),
+      h(Transactions,  { transactions }),
     ])
   )
 }
@@ -50,8 +53,8 @@ StateViewer.prototype.render = function () {
 StateViewer.prototype.renderLost = function () {
   const props = this.props || {}
   const { parsedFile } = props
-  const { version, metamask, browser } = parsedFile
-  const { selectedAddress, lostIdentities } = metamask
+  const { metamask } = parsedFile
+  const { lostIdentities } = metamask
 
   const lost = Object.keys(lostIdentities).map((address) => {
     return h(Address, { address })
@@ -67,7 +70,7 @@ StateViewer.prototype.renderLost = function () {
 StateViewer.prototype.renderBalance = function () {
   const props = this.props || {}
   const { parsedFile } = props
-  const { version, metamask } = parsedFile
+  const { metamask } = parsedFile
   const { selectedAddress, accounts } = metamask
 
   // Balance computing:

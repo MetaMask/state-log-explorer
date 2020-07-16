@@ -21,7 +21,6 @@ function AppRoot () {
 }
 
 AppRoot.prototype.render = function () {
-  const props = this.props
   const state = this.state || {}
   const { parsedFile } = state
 
@@ -75,4 +74,3 @@ AppRoot.prototype.onDrop = function(acceptedFiles, rejectedFiles) {
     reader.readAsBinaryString(file);
   }
 }
-
