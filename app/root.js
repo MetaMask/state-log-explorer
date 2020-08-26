@@ -71,6 +71,6 @@ AppRoot.prototype.onDrop = function(acceptedFiles, rejectedFiles) {
     reader.onabort = () => console.log('file reading was aborted');
     reader.onerror = () => console.log('file reading has failed');
 
-    reader.readAsBinaryString(file);
+    reader.readAsText(file,'UTF-8');
   }
 }
