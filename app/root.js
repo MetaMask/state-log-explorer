@@ -33,7 +33,7 @@ AppRoot.prototype.render = function () {
         h('h1', `MetaMask State Log Explorer`),
 
         h('a', {
-          href: 'https://metamask.zendesk.com/hc/en-us/articles/360015289832-How-to-Download-State-Logs-New-UI-',
+          href: 'https://metamask.zendesk.com/hc/en-us/articles/360015290092-How-to-Download-State-Logs',
         }, 'How to Copy MetaMask State Logs'),
         h('br'),
 
