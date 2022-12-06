@@ -24,7 +24,6 @@ StateViewerMobile.prototype.render = function () {
 
   let transactions = engine.backgroundState.TransactionController.transactions;
 
-  console.log(transactions)
   transactions = transactions.map(({ status, time, transaction, transactionHash, chainId }) => ({
     time,
     status,
