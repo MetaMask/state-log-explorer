@@ -16,7 +16,12 @@ function NewComponent () {
 
 NewComponent.prototype.render = function () {
   const props = this.props
-  const { transaction } = props
+  const { transaction, isMobile } = props
+
+  if(isMobile) {
+    return TransactionMobile(transaction)
+  }
+
   const {
     time,
     status,
@@ -90,6 +95,62 @@ NewComponent.prototype.render = function () {
       h('details', [
         h('summary', 'History'),
         h(TxStateHistory, { transaction }),
+      ]),
+    ])
+  )
+}
+
+function TransactionMobile(transaction) {
+  const {
+    time,
+    status,
+    txParams,
+    hash,
+    chainId,
+  } = transaction
+
+  const date = new Date(time)
+  const dateString = date.toGMTString()
+
+  const valueHex = ethUtil.stripHexPrefix(txParams.value)
+  const valueBn = new BN(valueHex, 16)
+  const valueStr = valueBn.toString(10)
+
+  return (
+    h(`.transaction.transaction-status-${status}`, {
+      style: {
+        border: '1px solid black',
+      },
+    }, [
+
+      h('p', `Time: ${dateString}`),
+
+      h('p', [
+        h('span', 'From: '),
+        h(Address, { address:  txParams.from}),
+      ]),
+
+      h('p', [
+        h('span', 'To: '),
+        h(Address, { address:  txParams.to}),
+      ]),
+
+      h('p', [
+        h('span', 'Value: '),
+        h('span', valueStr),
+        h('span', ' wei'),
+      ]),
+
+      h('p', [
+        h('span', 'Status: '),
+        h('span', status),
+      ]),
+
+      h('p', `Hash: ${hash}`),
+
+      h('p', [
+        h('span', 'ChainId: '),
+        h('span', chainId),
       ]),
     ])
   )

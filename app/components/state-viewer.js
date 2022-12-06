@@ -45,7 +45,7 @@ StateViewer.prototype.render = function () {
         this.renderBalance(),
       ]),
 
-      h(Transactions,  { transactions }),
+      h(Transactions,  { transactions, isMobile: false }),
     ])
   )
 }

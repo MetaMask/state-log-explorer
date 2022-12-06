@@ -12,14 +12,14 @@ function TransactionList () {
 
 TransactionList.prototype.render = function () {
   const props = this.props
-  const { transactions } = props
+  const { transactions, isMobile } = props
 
   return (
     h('section.transactions', [
       h('h2', 'Transactions'),
 
       h('.transaction-list', transactions.map((transaction) => {
-        return h(Transaction, { transaction })
+        return h(Transaction, { transaction, isMobile })
       }))
     ])
   )
