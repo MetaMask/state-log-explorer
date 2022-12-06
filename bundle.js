@@ -338,6 +338,9 @@ NewComponent.prototype.render = function () {
       txParams = transaction.txParams,
       txReceipt = transaction.txReceipt,
       hash = transaction.hash,
+      baseFeePerGas = transaction.baseFeePerGas,
+      userEditedGasLimit = transaction.userEditedGasLimit,
+      userFeeLevel = transaction.userFeeLevel,
       err = transaction.err;
 
   // Date stuff
@@ -357,11 +360,21 @@ NewComponent.prototype.render = function () {
   var gasLimitBN = new BN(gasLimitHex, 16);
   var gasLimitString = gasLimitBN.toString(10);
 
+  var baseFeePerGasHex = ethUtil.stripHexPrefix(baseFeePerGas);
+  var baseFeePerGasBN = new BN(baseFeePerGasHex, 16);
+  var baseFeePerGasString = baseFeePerGasBN.div(GWEI_FACTOR).toString(10);
+
   var maxFeePerGas = txParams.maxFeePerGas;
 
   var maxFeePerGasHex = ethUtil.stripHexPrefix(maxFeePerGas);
   var maxFeePerGasBN = new BN(maxFeePerGasHex, 16);
-  var maxFeePerGasString = maxFeePerGasBN.toString(10);
+  var maxFeePerGasString = maxFeePerGasBN.div(GWEI_FACTOR).toString(10);
+
+  var maxPriorityFeePerGas = txParams.maxPriorityFeePerGas;
+
+  var maxPriorityFeePerGasHex = ethUtil.stripHexPrefix(maxPriorityFeePerGas);
+  var maxPriorityFeePerGasBN = new BN(maxPriorityFeePerGasHex, 16);
+  var maxPriorityFeePerGasString = maxPriorityFeePerGasBN.div(GWEI_FACTOR).toString(10);
 
   var valueHex = ethUtil.stripHexPrefix(txParams.value);
   var valueBn = new BN(valueHex, 16);
@@ -371,7 +384,7 @@ NewComponent.prototype.render = function () {
     style: {
       border: '1px solid black'
     }
-  }, [h('p', 'Time: ' + dateString), h('p', [h('span', 'From: '), h(Address, { address: txParams.from })]), h('p', [h('span', 'To: '), h(Address, { address: txParams.to })]), h('p', [h('span', 'Value: '), h('span', valueStr), h('span', ' wei')]), h('p', 'Nonce: ' + txParams.nonce + ' ' + (txParams.nonce ? '(' + parseInt(txParams.nonce) + ')' : '')), h('p', 'Gas Price: ' + gasPriceString + ' gwei'), h('p', 'Gas Limit: ' + gasLimitString), h('p', 'Max Fee Per Gas: ' + maxFeePerGasString), h('p', 'Status: ' + status), status === 'failed' ? h('p', 'Reason: ' + JSON.stringify(err.message)) : null, h('p', [h('span', 'Hash: '), h(TransactionHash, { tx: hash })]), h('details', [h('summary', 'History'), h(TxStateHistory, { transaction: transaction })]), txReceipt ? h('details', [h('summary', 'Tx Receipt'), h(TxReceipt, { txReceipt: txReceipt })]) : null]);
+  }, [h('p', 'Time: ' + dateString), h('p', [h('span', 'From: '), h(Address, { address: txParams.from })]), h('p', [h('span', 'To: '), h(Address, { address: txParams.to })]), h('p', [h('span', 'Value: '), h('span', valueStr), h('span', ' wei')]), h('p', 'Nonce: ' + txParams.nonce + ' ' + (txParams.nonce ? '(' + parseInt(txParams.nonce) + ')' : '')), h('p', 'Gas Price: ' + gasPriceString + ' gwei'), h('p', 'Gas Limit: ' + gasLimitString + ' ' + (userEditedGasLimit ? '(User Edited)' : '')), h('p', [h('span', 'Gas Fees:'), h('span', ' '), h('span', 'Base: ' + baseFeePerGasString + ' gwei'), h('span', ' | '), h('span', 'Max: ' + maxFeePerGasString + ' gwei'), h('span', ' | '), h('span', 'Max Priority: ' + maxPriorityFeePerGasString + ' gwei'), h('span', userFeeLevel !== undefined ? ' | Fee Level: ' + userFeeLevel : null)]), h('p', 'Status: ' + status), status === 'failed' ? h('p', 'Reason: ' + JSON.stringify(err.message)) : null, h('p', [h('span', 'Hash: '), h(TransactionHash, { tx: hash })]), h('details', [h('summary', 'History'), h(TxStateHistory, { transaction: transaction })]), txReceipt ? h('details', [h('summary', 'Tx Receipt'), h(TxReceipt, { txReceipt: txReceipt })]) : null]);
 };
 
 function TransactionMobile(transaction) {
