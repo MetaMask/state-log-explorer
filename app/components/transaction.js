@@ -5,6 +5,7 @@ const ethUtil = require('ethereumjs-util')
 const Address = require('./address')
 const TransactionHash = require('./transaction-hash')
 const TxStateHistory = require('./tx-state-history')
+const TxReceipt = require('./tx-receipt')
 const BN = ethUtil.BN
 const GWEI_FACTOR = new BN('1000000000', 10)
 
@@ -19,6 +20,8 @@ NewComponent.prototype.render = function () {
   const props = this.props
   const { transaction, isMobile } = props
 
+  console.log(transaction)
+
   if(isMobile) {
     return TransactionMobile(transaction)
   }
@@ -27,6 +30,7 @@ NewComponent.prototype.render = function () {
     time,
     status,
     txParams,
+    txReceipt,
     hash,
     err,
     // id,
@@ -50,6 +54,11 @@ NewComponent.prototype.render = function () {
   const gasLimitHex = ethUtil.stripHexPrefix(gas)
   const gasLimitBN = new BN(gasLimitHex, 16)
   const gasLimitString = gasLimitBN.toString(10)
+
+  const { maxFeePerGas } = txParams
+  const maxFeePerGasHex = ethUtil.stripHexPrefix(maxFeePerGas)
+  const maxFeePerGasBN = new BN(maxFeePerGasHex, 16)
+  const maxFeePerGasString = maxFeePerGasBN.toString(10)
 
   const valueHex = ethUtil.stripHexPrefix(txParams.value)
   const valueBn = new BN(valueHex, 16)
@@ -86,6 +95,8 @@ NewComponent.prototype.render = function () {
 
       h('p', `Gas Limit: ${gasLimitString}`),
 
+      h('p', `Max Fee Per Gas: ${maxFeePerGasString}`),
+
       h('p', `Status: ${status}`),
 
       (status === 'failed') ?
@@ -100,6 +111,13 @@ NewComponent.prototype.render = function () {
         h('summary', 'History'),
         h(TxStateHistory, { transaction }),
       ]),
+
+      (txReceipt ? 
+        h('details', [
+          h('summary', 'Tx Receipt'),
+          h(TxReceipt, { txReceipt }),
+        ]) : null
+      )
     ])
   )
 }
