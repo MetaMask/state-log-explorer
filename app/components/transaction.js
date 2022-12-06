@@ -32,6 +32,9 @@ NewComponent.prototype.render = function () {
     txParams,
     txReceipt,
     hash,
+    baseFeePerGas,
+    userEditedGasLimit,
+    userFeeLevel,
     err,
     // id,
     // metamaskNetworkId,
@@ -55,10 +58,19 @@ NewComponent.prototype.render = function () {
   const gasLimitBN = new BN(gasLimitHex, 16)
   const gasLimitString = gasLimitBN.toString(10)
 
+  const baseFeePerGasHex = ethUtil.stripHexPrefix(baseFeePerGas)
+  const baseFeePerGasBN = new BN(baseFeePerGasHex, 16)
+  const baseFeePerGasString = baseFeePerGasBN.div(GWEI_FACTOR).toString(10)
+
   const { maxFeePerGas } = txParams
   const maxFeePerGasHex = ethUtil.stripHexPrefix(maxFeePerGas)
   const maxFeePerGasBN = new BN(maxFeePerGasHex, 16)
-  const maxFeePerGasString = maxFeePerGasBN.toString(10)
+  const maxFeePerGasString = maxFeePerGasBN.div(GWEI_FACTOR).toString(10)
+
+  const { maxPriorityFeePerGas } = txParams
+  const maxPriorityFeePerGasHex = ethUtil.stripHexPrefix(maxPriorityFeePerGas)
+  const maxPriorityFeePerGasBN = new BN(maxPriorityFeePerGasHex, 16)
+  const maxPriorityFeePerGasString = maxPriorityFeePerGasBN.div(GWEI_FACTOR).toString(10)
 
   const valueHex = ethUtil.stripHexPrefix(txParams.value)
   const valueBn = new BN(valueHex, 16)
@@ -93,9 +105,18 @@ NewComponent.prototype.render = function () {
 
       h('p', `Gas Price: ${gasPriceString} gwei`),
 
-      h('p', `Gas Limit: ${gasLimitString}`),
+      h('p', `Gas Limit: ${gasLimitString} ${(userEditedGasLimit ? '(User Edited)' : '')}`),
 
-      h('p', `Max Fee Per Gas: ${maxFeePerGasString}`),
+      h('p', [
+        h('span', 'Gas Fees:'),
+        h('span', ' '),
+        h('span', `Base: ${baseFeePerGasString} gwei`),
+        h('span', ' | '),
+        h('span', `Max: ${maxFeePerGasString} gwei`),
+        h('span', ' | '),
+        h('span', `Max Priority: ${maxPriorityFeePerGasString} gwei`),
+        h('span', userFeeLevel !== undefined ? ` | Fee Level: ${userFeeLevel}` : null)
+      ]),
 
       h('p', `Status: ${status}`),
 
