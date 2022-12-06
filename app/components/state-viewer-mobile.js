@@ -3,6 +3,7 @@ const h = require('react-hyperscript')
 const inherits = require('util').inherits
 const Transactions = require('./transaction-list')
 const Address = require('./address')
+const Identities = require('./identities')
 const ethUtil = require('ethereumjs-util')
 const BN = ethUtil.BN
 
@@ -45,11 +46,12 @@ StateViewerMobile.prototype.render = function () {
         h('p', `MetaMask Mobile`),
         h('div', [
           h('span', 'Current Account: '),
-          h(Address, { address: selectedAddress }),
+          h(Address, { address: selectedAddress })
         ]),
         anyLost ? this.renderLost() : null,
         this.renderBalance(),
-        this.renderSecretExport()
+        this.renderSecretExport(),
+        this.renderIdentities()
       ]),
 
       h(Transactions,  { transactions, isMobile: true }),
@@ -94,7 +96,7 @@ StateViewerMobile.prototype.renderSecretExport = function () {
   const props = this.props || {}
   const { parsedFile } = props
   const { privacy } = parsedFile
-  const { revealSRPTimestamps } = privacy;
+  const { revealSRPTimestamps } = privacy
 
   return (
     h('section.srp-reveal', [
@@ -102,6 +104,29 @@ StateViewerMobile.prototype.renderSecretExport = function () {
 
       h('.srp-list', revealSRPTimestamps.map((timestamp) => {
         return h('li', timestamp)
+      }))
+    ])
+  )
+}
+
+StateViewerMobile.prototype.renderIdentities = function () {
+  const props = this.props || {}
+  const { parsedFile } = props
+  const { engine } = parsedFile
+  const { backgroundState } = engine
+  const { PreferencesController } = backgroundState
+  const { identities } = PreferencesController;
+
+  return (
+    h('section.identities', [
+      h('h4', 'Identities'),
+
+      h('.identities', Object.keys(identities).map((addr) => {
+        return h(Identities, { 
+          address: identities[addr].address,
+          name: identities[addr].name,
+          importTime: identities[addr].importTime,
+        })
       }))
     ])
   )
