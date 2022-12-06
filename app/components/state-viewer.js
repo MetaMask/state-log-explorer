@@ -79,5 +79,5 @@ StateViewer.prototype.renderBalance = function () {
   const bnBalance = new BN(ethUtil.stripHexPrefix(hexBalance), 16)
   const stringBalance = bnBalance.toString(10)
 
-  return h('p', `Balance: ${stringBalance} wei`)
+  return h('p', `Balance: ${(bnBalance / 1e18).toFixed(8)} ETH (${stringBalance} wei)`)
 }
