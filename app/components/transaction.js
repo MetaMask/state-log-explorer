@@ -3,6 +3,7 @@ const h = require('react-hyperscript')
 const inherits = require('util').inherits
 const ethUtil = require('ethereumjs-util')
 const Address = require('./address')
+const TransactionHash = require('./transaction-hash')
 const TxStateHistory = require('./tx-state-history')
 const BN = ethUtil.BN
 const GWEI_FACTOR = new BN('1000000000', 10)
@@ -90,7 +91,10 @@ NewComponent.prototype.render = function () {
       (status === 'failed') ?
         h('p', `Reason: ${JSON.stringify(err.message)}`) : null,
 
-      h('p', `Hash: ${hash}`),
+      h('p', [
+        h('span', 'Hash: '),
+        h(TransactionHash, { tx: hash}),
+      ]),
 
       h('details', [
         h('summary', 'History'),
@@ -146,7 +150,10 @@ function TransactionMobile(transaction) {
         h('span', status),
       ]),
 
-      h('p', `Hash: ${hash}`),
+      h('p', [
+        h('span', 'Hash: '),
+        h(TransactionHash, { tx: hash}),
+      ]),
 
       h('p', [
         h('span', 'ChainId: '),
