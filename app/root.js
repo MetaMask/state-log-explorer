@@ -3,6 +3,7 @@ const Component = require('react').Component
 const h = require('react-hyperscript')
 const connect = require('react-redux').connect
 const StateViewer = require('./components/state-viewer')
+const StateViewerMobile = require('./components/state-viewer-mobile')
 
 import Dropzone from 'react-dropzone'
 
@@ -22,7 +23,7 @@ function AppRoot () {
 
 AppRoot.prototype.render = function () {
   const state = this.state || {}
-  const { parsedFile } = state
+  const { parsedFile, isMobile } = state
 
   return (
     h('.content', [
@@ -47,7 +48,7 @@ AppRoot.prototype.render = function () {
           h('p', 'Drop a state log file here.')
         ]),
 
-        parsedFile ? h(StateViewer, { parsedFile }) : null,
+        parsedFile ? h((isMobile ? StateViewerMobile : StateViewer), { parsedFile }) : null,
 
       ])
     ])
@@ -66,7 +67,9 @@ AppRoot.prototype.onDrop = function(acceptedFiles, rejectedFiles) {
       console.log('RESULT!')
       const parsedFile = JSON.parse(fileAsBinaryString)
       console.dir(parsedFile)
-      this.setState({ parsedFile })
+
+      const isMobile = 'metamask' in parsedFile ? false : true;
+      this.setState({ parsedFile, isMobile })
     };
     reader.onabort = () => console.log('file reading was aborted');
     reader.onerror = () => console.log('file reading has failed');

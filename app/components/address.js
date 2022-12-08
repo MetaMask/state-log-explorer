@@ -16,6 +16,6 @@ Address.prototype.render = function () {
   const link = `https://etherscan.io/address/${address}`
 
   return (
-    h('a', {href: link}, address)
+    h('a', {href: link, target: '_blank'}, address)
   )
 }
