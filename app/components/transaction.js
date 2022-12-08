@@ -20,10 +20,8 @@ NewComponent.prototype.render = function () {
   const props = this.props
   const { transaction, isMobile } = props
 
-  console.log(transaction)
-
   if(isMobile) {
-    return TransactionMobile(transaction)
+    return transactionMobile(transaction)
   }
 
   const {
@@ -143,7 +141,7 @@ NewComponent.prototype.render = function () {
   )
 }
 
-function TransactionMobile(transaction) {
+function transactionMobile(transaction) {
   const {
     time,
     status,
