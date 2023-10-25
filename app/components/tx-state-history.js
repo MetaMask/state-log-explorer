@@ -30,6 +30,10 @@ NewComponent.prototype.render = function () {
     // err,
   } = transaction
 
+  if (!history) {
+    return null;
+  }
+
   return (
     h('.tx-state-history', {
       style: {
