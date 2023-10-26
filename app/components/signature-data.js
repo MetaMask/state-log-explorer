@@ -58,7 +58,6 @@ SignatureList.prototype.render = function () {
       ),
     ])
   } else {
-    console.log({ signingMethod })
     return h("span", "FALLBACK")
   }
 }
