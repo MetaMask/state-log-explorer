@@ -52,3 +52,27 @@ transactions
   /* red */
   background-color: #fdcaca;
 }
+
+/*
+Signatures
+*/
+
+.signature {
+  margin: 8px 0;
+  padding: 8px;
+}
+
+.signature-stage-proposed {
+  /*  yellow */
+  background-color: #ffff6e;
+}
+
+.signature-stage-signed {
+  /*  green */
+  background-color: #c7ffc7;
+}
+
+.signature-stage-rejected {
+   /* red */
+  background-color: #fdcaca;
+}
