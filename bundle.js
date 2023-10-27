@@ -88,7 +88,6 @@ SignatureList.prototype.render = function () {
       overflow: "scroll"
     }, "" + JSON.stringify(signingData.data, null, 2))]);
   } else {
-    console.log({ signingMethod: signingMethod });
     return h("span", "FALLBACK");
   }
 };
@@ -312,7 +311,7 @@ StateViewer.prototype.render = function () {
   var version = parsedFile.version,
       metamask = parsedFile.metamask,
       browser = parsedFile.browser,
-      signatures = parsedFile.logs;
+      logs = parsedFile.logs;
   var selectedAddress = metamask.selectedAddress,
       lostIdentities = metamask.lostIdentities;
 
@@ -322,6 +321,8 @@ StateViewer.prototype.render = function () {
   var transactions = metamask.transactions ? metamask.transactions // txs for all networks and addresses
   : metamask.selectedAddressTxList ? metamask.selectedAddressTxList // legacy
   : metamask.currentNetworkTxList; // >=8.0.0
+
+  var signatures = logs || [];
 
   return h(".state-viewer", [h("section.overview", {
     style: {

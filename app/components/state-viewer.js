@@ -18,7 +18,7 @@ function StateViewer() {
 StateViewer.prototype.render = function () {
   const props = this.props || {}
   const { parsedFile } = props
-  const { version, metamask, browser, logs: signatures } = parsedFile
+  const { version, metamask, browser, logs } = parsedFile
   const { selectedAddress, lostIdentities } = metamask
 
   const anyLost = lostIdentities && Object.keys(lostIdentities).length > 0
@@ -28,6 +28,8 @@ StateViewer.prototype.render = function () {
     : metamask.selectedAddressTxList
     ? metamask.selectedAddressTxList // legacy
     : metamask.currentNetworkTxList // >=8.0.0
+
+  const signatures = logs || []
 
   return h(".state-viewer", [
     h(
