@@ -181,6 +181,7 @@ function transactionMobile(transaction) {
         h('span', valueStr),
         h('span', ' wei'),
       ]),
+      h('p', `Nonce: ${txParams.nonce} ` + (txParams.nonce ? `(${parseInt(txParams.nonce)})` : '')),
 
       h('p', [
         h('span', 'Status: '),
