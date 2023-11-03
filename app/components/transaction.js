@@ -119,7 +119,7 @@ NewComponent.prototype.render = function () {
       h('p', `Status: ${status}`),
 
       (status === 'failed') ?
-        h('p', `Reason: ${JSON.stringify(err.message)}`) : null,
+        h('p', `Reason: ${JSON.stringify(err ? err.message : '')}`) : null,
 
       h('p', [
         h('span', 'Hash: '),
