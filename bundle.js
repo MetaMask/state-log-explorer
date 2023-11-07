@@ -376,6 +376,31 @@ var inherits = require('util').inherits;
 
 module.exports = TransactionHash;
 
+function getBlockExplorer(hash, chainId) {
+  switch (chainId.toString(10)) {
+    case '1':
+      return 'https://etherscan.io/tx/' + hash;
+    case '5':
+      return 'https://goerli.etherscan.io/tx/' + hash;
+    case '10':
+      return 'https://optimistic.etherscan.io/tx/' + hash;
+    case '56':
+      return 'https://bscscan.com/tx/' + hash;
+    case '137':
+      return 'https://polygonscan.com/tx/' + hash;
+    case '250':
+      return 'https://ftmscan.com/tx/' + hash;
+    case '42161':
+      return 'https://explorer.arbitrum.io/tx/' + hash;
+    case '43114':
+      return 'https://snowtrace.io/tx/' + hash;
+    case '11155111':
+      return 'https://sepolia.etherscan.io/tx/' + hash;
+    default:
+      'https://etherscan.io/';
+  }
+}
+
 inherits(TransactionHash, Component);
 function TransactionHash() {
   Component.call(this);
@@ -383,11 +408,10 @@ function TransactionHash() {
 
 TransactionHash.prototype.render = function () {
   var props = this.props;
-  var tx = props.tx;
+  var tx = props.tx,
+      chainId = props.chainId;
 
-
-  var link = 'https://blockscan.com/tx/' + tx;
-
+  var link = getBlockExplorer(tx, chainId);
   return h('a', { href: link, target: '_blank' }, tx);
 };
 
@@ -456,7 +480,8 @@ NewComponent.prototype.render = function () {
       baseFeePerGas = transaction.baseFeePerGas,
       userEditedGasLimit = transaction.userEditedGasLimit,
       userFeeLevel = transaction.userFeeLevel,
-      err = transaction.err;
+      err = transaction.err,
+      history = transaction.history;
 
   // Date stuff
 
@@ -495,11 +520,14 @@ NewComponent.prototype.render = function () {
   var valueBn = new BN(valueHex, 16);
   var valueStr = valueBn.toString(10);
 
+  var chainIdHex = history ? history[0].chainId : '';
+  var chainId = parseInt(chainIdHex);
+
   return h('.transaction.transaction-status-' + status, {
     style: {
       border: '1px solid black'
     }
-  }, [h('p', 'Time: ' + dateString), h('p', [h('span', 'From: '), h(Address, { address: txParams.from })]), h('p', [h('span', 'To: '), h(Address, { address: txParams.to })]), h('p', [h('span', 'Value: '), h('span', valueStr), h('span', ' wei')]), h('p', 'Nonce: ' + txParams.nonce + ' ' + (txParams.nonce ? '(' + parseInt(txParams.nonce) + ')' : '')), h('p', 'Gas Price: ' + gasPriceString + ' gwei'), h('p', 'Gas Limit: ' + gasLimitString + ' ' + (userEditedGasLimit ? '(User Edited)' : '')), h('p', [h('span', 'Gas Fees:'), h('span', ' '), h('span', 'Base: ' + baseFeePerGasString + ' gwei'), h('span', ' | '), h('span', 'Max: ' + maxFeePerGasString + ' gwei'), h('span', ' | '), h('span', 'Max Priority: ' + maxPriorityFeePerGasString + ' gwei'), h('span', userFeeLevel !== undefined ? ' | Fee Level: ' + userFeeLevel : null)]), h('p', 'Status: ' + status), status === 'failed' ? h('p', 'Reason: ' + JSON.stringify(err ? err.message : '')) : null, h('p', [h('span', 'Hash: '), h(TransactionHash, { tx: hash })]), h('details', [h('summary', 'History'), h(TxStateHistory, { transaction: transaction })]), txReceipt ? h('details', [h('summary', 'Tx Receipt'), h(TxReceipt, { txReceipt: txReceipt })]) : null]);
+  }, [h('p', 'Time: ' + dateString), h('p', [h('span', 'From: '), h(Address, { address: txParams.from })]), h('p', [h('span', 'To: '), h(Address, { address: txParams.to })]), h('p', [h('span', 'Value: '), h('span', valueStr), h('span', ' wei')]), h('p', 'Nonce: ' + txParams.nonce + ' ' + (txParams.nonce ? '(' + parseInt(txParams.nonce) + ')' : '')), h('p', 'Gas Price: ' + gasPriceString + ' gwei'), h('p', 'Gas Limit: ' + gasLimitString + ' ' + (userEditedGasLimit ? '(User Edited)' : '')), h('p', [h('span', 'Gas Fees:'), h('span', ' '), h('span', 'Base: ' + baseFeePerGasString + ' gwei'), h('span', ' | '), h('span', 'Max: ' + maxFeePerGasString + ' gwei'), h('span', ' | '), h('span', 'Max Priority: ' + maxPriorityFeePerGasString + ' gwei'), h('span', userFeeLevel !== undefined ? ' | Fee Level: ' + userFeeLevel : null)]), h('p', 'Status: ' + status), status === 'failed' ? h('p', 'Reason: ' + JSON.stringify(err ? err.message : '')) : null, h('p', [h('span', 'Hash: '), h(TransactionHash, { tx: hash, chainId: chainId })]), h('p', [h('span', 'ChainId: '), h('span', chainId)]), h('details', [h('summary', 'History'), h(TxStateHistory, { transaction: transaction })]), txReceipt ? h('details', [h('summary', 'Tx Receipt'), h(TxReceipt, { txReceipt: txReceipt })]) : null]);
 };
 
 function transactionMobile(transaction) {
@@ -521,7 +549,7 @@ function transactionMobile(transaction) {
     style: {
       border: '1px solid black'
     }
-  }, [h('p', 'Time: ' + dateString), h('p', [h('span', 'From: '), h(Address, { address: txParams.from })]), h('p', [h('span', 'To: '), h(Address, { address: txParams.to })]), h('p', [h('span', 'Value: '), h('span', valueStr), h('span', ' wei')]), h('p', 'Nonce: ' + txParams.nonce + ' ' + (txParams.nonce ? '(' + parseInt(txParams.nonce) + ')' : '')), h('p', [h('span', 'Status: '), h('span', status)]), h('p', [h('span', 'Hash: '), h(TransactionHash, { tx: hash })]), h('p', [h('span', 'ChainId: '), h('span', chainId)])]);
+  }, [h('p', 'Time: ' + dateString), h('p', [h('span', 'From: '), h(Address, { address: txParams.from })]), h('p', [h('span', 'To: '), h(Address, { address: txParams.to })]), h('p', [h('span', 'Value: '), h('span', valueStr), h('span', ' wei')]), h('p', 'Nonce: ' + txParams.nonce + ' ' + (txParams.nonce ? '(' + parseInt(txParams.nonce) + ')' : '')), h('p', [h('span', 'Status: '), h('span', status)]), h('p', [h('span', 'Hash: '), h(TransactionHash, { tx: hash, chainId: chainId })]), h('p', [h('span', 'ChainId: '), h('span', chainId)])]);
 }
 
 },{"./address":1,"./transaction-hash":8,"./tx-receipt":11,"./tx-state-history":12,"ethereumjs-util":51,"react":311,"react-hyperscript":274,"util":364}],11:[function(require,module,exports){

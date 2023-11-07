@@ -34,11 +34,11 @@ NewComponent.prototype.render = function () {
     userEditedGasLimit,
     userFeeLevel,
     err,
+    history,
     // id,
     // metamaskNetworkId,
     // gasLimitSpecified,
     // estimatedGas,
-    // history,
     // retryCount,
   } = transaction
 
@@ -73,6 +73,9 @@ NewComponent.prototype.render = function () {
   const valueHex = ethUtil.stripHexPrefix(txParams.value)
   const valueBn = new BN(valueHex, 16)
   const valueStr = valueBn.toString(10)
+
+  const chainIdHex = history ? history[0].chainId : ''
+  const chainId = parseInt(chainIdHex)
 
   return (
     h(`.transaction.transaction-status-${status}`, {
@@ -123,7 +126,12 @@ NewComponent.prototype.render = function () {
 
       h('p', [
         h('span', 'Hash: '),
-        h(TransactionHash, { tx: hash}),
+        h(TransactionHash, { tx: hash, chainId}),
+      ]),
+
+      h('p', [
+        h('span', 'ChainId: '),
+        h('span', chainId),
       ]),
 
       h('details', [
@@ -190,7 +198,7 @@ function transactionMobile(transaction) {
 
       h('p', [
         h('span', 'Hash: '),
-        h(TransactionHash, { tx: hash}),
+        h(TransactionHash, { tx: hash, chainId}),
       ]),
 
       h('p', [
