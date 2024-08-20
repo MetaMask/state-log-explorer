@@ -43,7 +43,7 @@
     "brfs": "^2.0.2",
     "browserify": "^16.5.1",
     "static-server": "^2.2.1",
-    "watchify": "^3.11.1"
+    "watchify": "4.0.0"
   },
   "directories": {
     "lib": "lib"
