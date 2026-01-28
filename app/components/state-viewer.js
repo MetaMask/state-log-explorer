@@ -80,7 +80,7 @@ StateViewer.prototype.renderBalance = function () {
     hexBalance = accounts[selectedAddress].balance
   } else if (accountsByChainId) {
     for (const chainId in accountsByChainId) {
-      if (accountsByChainId[chainId][selectedAddress]) {
+      if (accountsByChainId[chainId] && accountsByChainId[chainId][selectedAddress]) {
         hexBalance = accountsByChainId[chainId][selectedAddress].balance
         break
       }

@@ -355,12 +355,21 @@ StateViewer.prototype.renderBalance = function () {
   var parsedFile = props.parsedFile;
   var metamask = parsedFile.metamask;
   var selectedAddress = metamask.selectedAddress,
-      accounts = metamask.accounts;
+      accounts = metamask.accounts,
+      accountsByChainId = metamask.accountsByChainId;
 
-  // Balance computing:
+  var hexBalance = "0x0";
+  if (accounts && accounts[selectedAddress]) {
+    hexBalance = accounts[selectedAddress].balance;
+  } else if (accountsByChainId) {
+    for (var chainId in accountsByChainId) {
+      if (accountsByChainId[chainId] && accountsByChainId[chainId][selectedAddress]) {
+        hexBalance = accountsByChainId[chainId][selectedAddress].balance;
+        break;
+      }
+    }
+  }
 
-  var account = accounts[selectedAddress];
-  var hexBalance = account.balance;
   var bnBalance = new BN(ethUtil.stripHexPrefix(hexBalance), 16);
   var stringBalance = bnBalance.toString(10);
 
@@ -664,7 +673,7 @@ AppRoot.prototype.render = function () {
   return h('.content', [h('div', {
     style: {}
   }, [h('h1', 'MetaMask State Log Explorer'), h('a', {
-    href: 'https://metamask.zendesk.com/hc/en-us/articles/360015290092-How-to-Download-State-Logs'
+    href: 'https://support.metamask.io/configure/wallet/how-to-download-state-logs/'
   }, 'How to Copy MetaMask State Logs'), h('br'), h('a', {
     href: 'https://github.com/MetaMask/state-log-explorer'
   }, 'Fork on Github'), h(_reactDropzone2.default, {
