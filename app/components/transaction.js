@@ -77,7 +77,7 @@ NewComponent.prototype.render = function () {
 
   // Try direct chainId first, then fall back to history
   let chainId = txChainId
-  if (chainId === undefined && history && history[0]) {
+  if (chainId == null && history && history[0]) {
     chainId = history[0].chainId
   }
   // Convert hex string to number if needed
