@@ -35,6 +35,7 @@ NewComponent.prototype.render = function () {
     userFeeLevel,
     err,
     history,
+    chainId: txChainId,
     // id,
     // metamaskNetworkId,
     // gasLimitSpecified,
@@ -74,8 +75,21 @@ NewComponent.prototype.render = function () {
   const valueBn = new BN(valueHex, 16)
   const valueStr = valueBn.toString(10)
 
-  const chainIdHex = history ? history[0].chainId : ''
-  const chainId = parseInt(chainIdHex)
+  // Try direct chainId first, then fall back to history
+  let chainId = txChainId
+  if (chainId == null && history && history[0]) {
+    chainId = history[0].chainId
+  }
+  // Convert hex string to number if needed
+  if (typeof chainId === 'string' && chainId.startsWith('0x')) {
+    chainId = parseInt(chainId, 16)
+  } else if (typeof chainId === 'string') {
+    chainId = parseInt(chainId, 10)
+  }
+  // Display "Unknown" if still NaN
+  if (isNaN(chainId)) {
+    chainId = 'Unknown'
+  }
 
   return (
     h(`.transaction.transaction-status-${status}`, {

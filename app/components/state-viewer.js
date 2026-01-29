@@ -73,11 +73,20 @@ StateViewer.prototype.renderBalance = function () {
   const props = this.props || {}
   const { parsedFile } = props
   const { metamask } = parsedFile
-  const { selectedAddress, accounts } = metamask
+  const { selectedAddress, accounts, accountsByChainId } = metamask
 
-  // Balance computing:
-  const account = accounts[selectedAddress]
-  const hexBalance = account.balance
+  let hexBalance = "0x0"
+  if (accounts && accounts[selectedAddress]) {
+    hexBalance = accounts[selectedAddress].balance
+  } else if (accountsByChainId) {
+    for (const chainId in accountsByChainId) {
+      if (accountsByChainId[chainId] && accountsByChainId[chainId][selectedAddress]) {
+        hexBalance = accountsByChainId[chainId][selectedAddress].balance
+        break
+      }
+    }
+  }
+
   const bnBalance = new BN(ethUtil.stripHexPrefix(hexBalance), 16)
   const stringBalance = bnBalance.toString(10)
 
