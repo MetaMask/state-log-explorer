@@ -490,7 +490,8 @@ NewComponent.prototype.render = function () {
       userEditedGasLimit = transaction.userEditedGasLimit,
       userFeeLevel = transaction.userFeeLevel,
       err = transaction.err,
-      history = transaction.history;
+      history = transaction.history,
+      txChainId = transaction.chainId;
 
   // Date stuff
 
@@ -529,8 +530,21 @@ NewComponent.prototype.render = function () {
   var valueBn = new BN(valueHex, 16);
   var valueStr = valueBn.toString(10);
 
-  var chainIdHex = history ? history[0].chainId : '';
-  var chainId = parseInt(chainIdHex);
+  // Try direct chainId first, then fall back to history
+  var chainId = txChainId;
+  if (chainId === undefined && history && history[0]) {
+    chainId = history[0].chainId;
+  }
+  // Convert hex string to number if needed
+  if (typeof chainId === 'string' && chainId.startsWith('0x')) {
+    chainId = parseInt(chainId, 16);
+  } else if (typeof chainId === 'string') {
+    chainId = parseInt(chainId, 10);
+  }
+  // Display "Unknown" if still NaN
+  if (isNaN(chainId)) {
+    chainId = 'Unknown';
+  }
 
   return h('.transaction.transaction-status-' + status, {
     style: {
